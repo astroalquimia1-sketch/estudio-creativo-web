@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scalae=1.0">
+  <title>ASTROALQUIMIA ATELIER | Arte Cósmico, Alquimia, Astrología y Psiquis</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            starlight: '#ffd700',
+            nebulaViolet: '#120e24',
+            cosmicNavy: '#0b0914',
+            mysticPurple: '#2d1b4e',
+            astralCyan: '#4deeea',
+            goldGlow: '#e2b04c'
+          },
+          fontFamily: {
+            rounded: ['Quicksand', 'Nunito', 'sans-serif'],
+            magical: ['Comfortaa', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Rounded & Soft Aesthetics -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      background-color: #0b0914;
+      color: #e2e8f0;
+      font-family: 'Quicksand', 'Nunito', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Starry Background Canvas */
+    #cosmic-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Custom Glassmorphism Card Style */
+    .mystic-card {
+      background: rgba(18, 14, 36, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 176, 76, 0.25);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .mystic-card:hover {
+      border-color: rgba(255, 215, 0, 0.7);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25), 0 0 10px rgba(77, 238, 234, 0.2);
+      transform: translateY(-6px);
+    }
+
+    /* Gold Gradient Text */
+    .text-gold-gradient {
+      background: linear-gradient(135deg, #fff2a3 0%, #ffd700 50%, #b78727 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-cyan-glow {
+      text-shadow: 0 0 10px rgba(77, 238, 234, 0.6);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0914;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2d1b4e;
+      border-radius: 9999px;
+      border: 1px solid #ffd700;
+    }
+  </style>
+</head>
+<body class="relative min-h-screen selection:bg-goldGlow selection:text-black">
+
+  <!-- Interactive Canvas for Stars & Constellations -->
+  <canvas id="cosmic-canvas"></canvas>
+
+  <div class="relative z-10">
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-cosmicNavy/80 border-b border-goldGlow/20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-mysticPurple to-starlight/40 flex items-center justify-center p-0.5 shadow-lg group-hover:scale-105 transition-transform">
+            <div class="w-full h-full bg-cosmicNavy rounded-full flex items-center justify-center">
+              <i data-lucide="sparkles" class="w-5 h-5 text-starlight"></i>
+            </div>
+          </div>
+          <div>
+            <span class="text-xl font-bold font-magical tracking-wider text-gold-gradient">Astro</span>
+            <span class="text-xs block text-cyan-400 font-semibold tracking-widest uppercase">Alquimia</span>
+          </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+          <a href="#galeria" data-i18n="nav_gallery" class="hover:text-starlight transition-colors">Galeria & Catálogo</a>
+          <a href="#mecenazgo" data-i18n="nav_patronage" class="hover:text-starlight transition-colors">Investigación</a>
+          <a href="#filosofia" data-i18n="nav_philosophy" class="hover:text-starlight transition-colors">Filosofía</a>
+          <a href="#contacto" data-i18n="nav_contact" class="hover:text-starlight transition-colors">Encargos</a>
+        </nav>
+
+        <!-- Language Selector Dropdown -->
+        <div class="flex items-center space-x-4">
+          <div class="relative inline-block text-left">
+            <div class="flex items-center space-x-2 bg-mysticPurple/60 border border-goldGlow/40 rounded-full px-3 py-1.5 text-xs text-starlight focus-within:ring-2 focus-within:ring-starlight">
+              <i data-lucide="globe" class="w-4 h-4 text-cyan-400"></i>
+              <select id="lang-select" onchange="changeLanguage(this.value)" class="bg-transparent text-starlight focus:outline-none cursor-pointer font-semibold">
+                <option value="es" class="bg-cosmicNavy text-white">ES - Español</option>
+                <option value="en" class="bg-cosmicNavy text-white">EN - English</option>
+                <option value="pt" class="bg-cosmicNavy text-white">PT - Português</option>
+                <option value="fr" class="bg-cosmicNavy text-white">FR - Français</option>
+                <option value="it" class="bg-cosmicNavy text-white">IT - Italiano</option>
+                <option value="de" class="bg-cosmicNavy text-white">DE - Deutsch</option>
+                <option value="ru" class="bg-cosmicNavy text-white">RU - Русский</option>
+                <option value="zh" class="bg-cosmicNavy text-white">ZH - 中文</option>
+                <option value="ja" class="bg-cosmicNavy text-white">JA - 日本語</option>
+                <option value="ar" class="bg-cosmicNavy text-white">AR - العربية</option>
+                <option value="hi" class="bg-cosmicNavy text-white">HI - हिन्दी</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-starlight hover:text-white">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden bg-nebulaViolet/95 border-b border-goldGlow/20 px-6 py-4 space-y-3">
+        <a href="#galeria" onclick="toggleMobileMenu()" data-i18n="nav_gallery" class="block hover:text-starlight">Galería & Catálogo</a>
+        <a href="#mecenazgo" onclick="toggleMobileMenu()" data-i18n="nav_patronage" class="block hover:text-starlight">Investigación</a>
+        <a href="#filosofia" onclick="toggleMobileMenu()" data-i18n="nav_philosophy" class="block hover:text-starlight">Filosofía</a>
+        <a href="#contacto" onclick="toggleMobileMenu()" data-i18n="nav_contact" class="block hover:text-starlight">Encargos</a>
+      </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative py-20 lg:py-32 px-4 max-w-6xl mx-auto text-center">
+      <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-mysticPurple/40 border border-goldGlow/30 text-starlight text-xs mb-8 tracking-widest uppercase shadow-inner">
+        <i data-lucide="moon" class="w-4 h-4 text-cyan-300"></i>
+        <span data-i18n="hero_badge"> Lenguaje Astrológico & Arte Simbólico Transpersonal</span>
+        <i data-lucide="sun" class="w-4 h-4 text-starlight"></i>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold font-magical tracking-tight text-white mb-6 leading-tight">
+        <span data-i18n="hero_title_1">Donde la Psiquis y el Cosmos</span><br/>
+        <span class="text-gold-gradient" data-i18n="hero_title_2">Se Manifestan en Arte & Obra</span>
+      </h1>
+
+      <p class="max-w-3xl mx-auto text-base sm:text-lg text-slate-300 mb-10 leading-relaxed font-light" data-i18n="hero_description">
+        Creamos identidades cosmicas y astrológicas, empaques alquímicos y obras de arte sagradas financiadas por las diferentes cominudades. Fusionamos los arquetipos del Tarot, el I Ching, las plantas maestras y la astrología del inconsciente.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#galeria" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-starlight via-goldGlow to-amber-600 text-black font-bold hover:shadow-lg hover:shadow-starlight/30 transition-all flex items-center justify-center space-x-2">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+          <span data-i18n="hero_btn_explore">Explorar Catálogo</span>
+        </a>
+        <a href="#contacto" class="w-full sm:w-auto px-8 py-4 rounded-full bg-mysticPurple/50 border border-goldGlow/50 text-starlight hover:bg-mysticPurple transition-all flex items-center justify-center space-x-2">
+          <i data-lucide="wand-2" class="w-5 h-5 text-cyan-300"></i>
+          <span data-i18n="hero_btn_custom">Solicitar Obra Personalizada</span>
+        </a>
+      </div>
+
+      <!-- METRICS METERS -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 pt-12 border-t border-goldGlow/20">
+        <div class="text-center p-4">
+          <div class="text-3xl sm:text-4xl font-extrabold text-gold-gradient font-magical">120+</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="metric_works">Obras & Marcas Alquímicas</div>
+        </div>
+        <div class="text-center p-4">
+          <div class="text-3xl sm:text-4xl font-extrabold text-cyan-400 font-magical">12</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="metric_zodiac">Casas Astrológicas Mapeadas</div>
+        </div>
+        <div class="text-center p-4">
+          <div class="text-3xl sm:text-4xl font-extrabold text-gold-gradient font-magical">45+</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="metric_patrons">Mecenas Activos</div>
+        </div>
+        <div class="text-center p-4">
+          <div class="text-3xl sm:text-4xl font-extrabold text-purple-400 font-magical">64</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1" data-i18n="metric_hexagrams">Hexagramas del I Ching</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY CATALOG SECTION -->
+    <section id="galeria" class="py-20 px-4 max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl sm:text-5xl font-bold font-magical text-gold-gradient mb-4" data-i18n="gallery_title">Catálogo & Galería de Alquimia Visual</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base" data-i18n="gallery_subtitle">
+          Explora proyectos donde el lujo estético abraza los conocimientos esotéricos, las plantas sagradas y la psicología profunda del inconsciente.
+        </p>
+
+        <!-- Category Filters -->
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mt-8" id="filter-buttons">
+          <button onclick="filterGallery('all')" class="filter-btn active px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-starlight text-black border border-starlight transition-all" data-filter="all" data-i18n="filter_all">Todos</button>
+          <button onclick="filterGallery('branding')" class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-cosmicNavy/80 text-slate-300 border border-goldGlow/30 hover:border-starlight transition-all" data-filter="branding" data-i18n="filter_branding">Branding Astrológico</button>
+          <button onclick="filterGallery('packaging')" class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-cosmicNavy/80 text-slate-300 border border-goldGlow/30 hover:border-starlight transition-all" data-filter="packaging" data-i18n="filter_packaging">Packaging Alquímico</button>
+          <button onclick="filterGallery('tarot')" class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-cosmicNavy/80 text-slate-300 border border-goldGlow/30 hover:border-starlight transition-all" data-filter="tarot" data-i18n="filter_tarot">Tarot & I Ching</button>
+          <button onclick="filterGallery('plantas')" class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-cosmicNavy/80 text-slate-300 border border-goldGlow/30 hover:border-starlight transition-all" data-filter="plantas" data-i18n="filter_plantas">Plantas Sagradas & Psiquis</button>
+          <button onclick="filterGallery('patronadas')" class="filter-btn px-4 py-2 rounded-full text-xs sm:text-sm font-semibold bg-cosmicNavy/80 text-slate-300 border border-goldGlow/30 hover:border-starlight transition-all" data-filter="patronadas" data-i18n="filter_patronadas">Obras Financiadas / Investigación</button>
+        </div>
+      </div>
+
+      <!-- GALLERY GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="gallery-grid">
+        <!-- JS dynamically populates items here -->
+      </div>
+    </section>
+
+    <!-- PATRONAGE SECTION -->
+    <section id="mecenazgo" class="py-20 px-4 max-w-7xl mx-auto border-t border-goldGlow/20">
+      <div class="text-center mb-16">
+        <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold" data-i18n="patron_badge">Co-Creación & Producción</span>
+        <h2 class="text-3xl sm:text-5xl font-bold font-magical text-gold-gradient mt-2 mb-4" data-i18n="patron_title">Niveles de Producciones</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base" data-i18n="patron_subtitle">
+          Financia obras de arte personalizadas e investigaciones simbólicas. Como obras, Series y Trabajos Personalizados
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Tier 1 -->
+        <div class="mystic-card rounded-3xl p-8 relative flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-goldGlow/10 border border-goldGlow/30 flex items-center justify-center text-starlight mb-6">
+              <i data-lucide="sparkle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-2xl font-bold font-magical text-white" data-i18n="tier1_title">Iniciado Astral</h3>
+            <p class="text-xs text-slate-400 mt-2 mb-6" data-i18n="tier1_desc">Para quienes apoyan la creación continua de sellos y grabados simbólicos.</p>
+            <div class="text-3xl font-extrabold text-gold-gradient mb-6">$250 <span class="text-xs text-slate-400 font-normal">/ obra</span></div>
+            <ul class="space-y-3 text-sm text-slate-300 mb-8">
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier1_f1">Nombre en la bitácora del proyecto</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier1_f2">Imprensión numerada serigrafiada</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier1_f3">Certificado codificado astrologicamente</span></li>
+            </ul>
+          </div>
+          <a href="#contacto" onclick="selectTier('Iniciado Astral')" class="w-full py-3 rounded-full bg-mysticPurple border border-goldGlow/50 text-starlight hover:bg-starlight hover:text-black transition-all font-semibold text-center text-sm block" data-i18n="tier_btn">Mecenar Nivel</a>
+        </div>
+
+        <!-- Tier 2 (Highlighted) -->
+        <div class="mystic-card rounded-3xl p-8 relative flex flex-col justify-between border-2 border-starlight bg-nebulaViolet/90 shadow-2xl">
+          <div class="absolute -top-4 right-8 bg-starlight text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-md" data-i18n="popular">Más Elegido</div>
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-cyan-400/10 border border-cyan-400/30 flex items-center justify-center text-cyan-300 mb-6">
+              <i data-lucide="moon-star" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-2xl font-bold font-magical text-white" data-i18n="tier2_title">Alquimista Guía</h3>
+            <p class="text-xs text-slate-400 mt-2 mb-6" data-i18n="tier2_desc">Financia directamente lienzos y proyectos de branding místico a medida.</p>
+            <div class="text-3xl font-extrabold text-gold-gradient mb-6">$1,200 <span class="text-xs text-slate-400 font-normal">/ obra</span></div>
+            <ul class="space-y-3 text-sm text-slate-300 mb-8">
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier2_f1">Inclusión de carta natal en la composición</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier2_f2">Pieza física original con pan de oro</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier2_f3">Consulta previa de intencionalidad</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier2_f4">Caja de empaque personalizada</span></li>
+            </ul>
+          </div>
+          <a href="#contacto" onclick="selectTier('Alquimista Guía')" class="w-full py-3 rounded-full bg-starlight text-black font-bold hover:bg-goldGlow transition-all text-center text-sm block" data-i18n="tier_btn">Mecenar Nivel</a>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="mystic-card rounded-3xl p-8 relative flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-300 mb-6">
+              <i data-lucide="sun-medium" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-2xl font-bold font-magical text-white" data-i18n="tier3_title">Guardián del Cosmos</h3>
+            <p class="text-xs text-slate-400 mt-2 mb-6" data-i18n="tier3_desc">Financiación total de altares tridimensionales e instalaciones místicas completas.</p>
+            <div class="text-3xl font-extrabold text-gold-gradient mb-6">$3,500+ <span class="text-xs text-slate-400 font-normal">/ proyecto</span></div>
+            <ul class="space-y-3 text-sm text-slate-300 mb-8">
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier3_f1">Obra monumental única y exclusiva</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier3_f2">Co-titularidad de derechos de exhibición</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier3_f3">Ritual de consagración de la pieza</span></li>
+              <li class="flex items-center space-x-2"><i data-lucide="check" class="w-4 h-4 text-starlight"></i><span data-i18n="tier3_f4">Libro de artista encuadernado a mano</span></li>
+            </ul>
+          </div>
+          <a href="#contacto" onclick="selectTier('Guardián del Cosmos')" class="w-full py-3 rounded-full bg-mysticPurple border border-goldGlow/50 text-starlight hover:bg-starlight hover:text-black transition-all font-semibold text-center text-sm block" data-i18n="tier_btn">Mecenar Nivel</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY / ESOTERIC CONCEPTS -->
+    <section id="filosofia" class="py-20 px-4 max-w-6xl mx-auto border-t border-goldGlow/20 text-center">
+      <span class="text-xs uppercase tracking-widest text-starlight font-semibold" data-i18n="philo_badge">Fundamento Simbólico</span>
+      <h2 class="text-3xl sm:text-5xl font-bold font-magical text-white mt-2 mb-12" data-i18n="philo_title">Símbolos, Psiquis y Geometría Sagrada</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="mystic-card p-6 rounded-2xl text-left">
+          <i data-lucide="compass" class="w-8 h-8 text-starlight mb-4"></i>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="p1_title">Astrología Transpersonal</h4>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="p1_desc">Mapeamos tránsitos planetarios e hilos zodiacales para infundir arquetipos vivos en cada línea de diseño.</p>
+        </div>
+
+        <div class="mystic-card p-6 rounded-2xl text-left">
+          <i data-lucide="layers" class="w-8 h-8 text-cyan-400 mb-4"></i>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="p2_title">I Ching & Arcanos</h4>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="p2_desc">Las dinámicas del cambio del I Ching combinadas con la profundidad psicológica de los Arcanos Mayores.</p>
+        </div>
+
+        <div class="mystic-card p-6 rounded-2xl text-left">
+          <i data-lucide="flower-2" class="w-8 h-8 text-emerald-400 mb-4"></i>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="p3_title">Plantas Sagradas</h4>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="p3_desc">Visualización de estados modificados de conciencia mediante pigmentos botánicos y patrones de flora sagrada.</p>
+        </div>
+
+        <div class="mystic-card p-6 rounded-2xl text-left">
+          <i data-lucide="brain" class="w-8 h-8 text-purple-400 mb-4"></i>
+          <h4 class="text-lg font-bold text-white mb-2" data-i18n="p4_title">Geometría del Inconsciente</h4>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="p4_desc">Traducimos sueños, sombras e impulsos del inconsciente colectivo en empaques y arte visual de prestigio.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT & COMMISSIONS FORM -->
+    <section id="contacto" class="py-20 px-4 max-w-4xl mx-auto border-t border-goldGlow/20">
+      <div class="mystic-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-60 h-60 bg-starlight/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="text-center mb-10">
+          <h2 class="text-3xl sm:text-4xl font-bold font-magical text-gold-gradient" data-i18n="form_title">Solicitar Encargo o Proyecto de Mecenazgo</h2>
+          <p class="text-slate-400 text-sm mt-2" data-i18n="form_subtitle">Completa los datos para iniciar la sincronía alquímica de tu proyecto visual.</p>
+        </div>
+
+        <form id="commission-form" onsubmit="handleFormSubmit(event)" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="form_name">Nombre Completo</label>
+              <input type="text" required class="w-full bg-cosmicNavy/90 border border-goldGlow/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-starlight" placeholder="Tu nombre">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="form_email">Correo Electrónico</label>
+              <input type="email" required class="w-full bg-cosmicNavy/90 border border-goldGlow/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-starlight" placeholder="correo@ejemplo.com">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="form_intent">Intención del Proyecto</label>
+              <select id="form-intent-select" class="w-full bg-cosmicNavy/90 border border-goldGlow/30 rounded-xl px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-starlight">
+                <option value="branding" data-i18n="intent_opt1">Branding & Identidad Astrológica</option>
+                <option value="packaging" data-i18n="intent_opt2">Diseño de Packaging Alquímico</option>
+                <option value="tarot" data-i18n="intent_opt3">Obra de Tarot o I Ching Personalizada</option>
+                <option value="plantas" data-i18n="intent_opt4">Arte de Plantas Sagradas & Psiquis</option>
+                <option value="mecenazgo" data-i18n="intent_opt5">Financiación / Mecenazgo Directo</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="form_zodiac">Signo Zodiacal / Elemento de Interés</label>
+              <input type="text" class="w-full bg-cosmicNavy/90 border border-goldGlow/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-starlight" placeholder="Ej: Escorpio, Fuego, Sol en Leo">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="form_details">Detalles de la Visión o Arquetipos deseados</label>
+            <textarea rows="4" required class="w-full bg-cosmicNavy/90 border border-goldGlow/30 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-starlight" placeholder="Describe los arquetipos, conceptos o necesidades de marca..."></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-starlight via-goldGlow to-amber-600 text-black font-bold font-magical hover:shadow-xl hover:shadow-starlight/20 transition-all flex items-center justify-center space-x-2">
+            <i data-lucide="send" class="w-5 h-5"></i>
+            <span data-i18n="form_btn">Enviar Solicitud Mística</span>
+          </button>
+        </form>
+
+        <div id="form-message" class="hidden mt-6 p-4 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-center text-sm">
+          ✨ <span data-i18n="form_success">¡Tu mensaje ha sido enviado a través del éter! Te responderemos en la próxima alineación favorable.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-goldGlow/20 py-12 px-4 text-center text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="sparkles" class="w-4 h-4 text-starlight"></i>
+          <span class="font-magical text-slate-300">AURA ATELIER</span>
+          <span>© 2026 - Arte, Psiquis & Cosmos.</span>
+        </div>
+        <div class="flex space-x-6">
+          <a href="#" class="hover:text-starlight transition-colors">Instagram</a>
+          <a href="#" class="hover:text-starlight transition-colors">Behance</a>
+          <a href="#" class="hover:text-starlight transition-colors">ArtStation</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ITEM DETAIL MODAL -->
+  <div id="item-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="mystic-card rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative border-2 border-starlight">
+      <button onclick="closeModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-white bg-cosmicNavy rounded-full border border-goldGlow/30">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <img id="modal-img" src="" alt="" class="w-full h-64 sm:h-80 object-cover rounded-2xl border border-goldGlow/30">
+        <div class="flex flex-col justify-between">
+          <div>
+            <span id="modal-category" class="inline-block px-3 py-1 rounded-full text-xs bg-mysticPurple text-starlight border border-goldGlow/30 font-semibold mb-3"></span>
+            <h3 id="modal-title" class="text-2xl font-bold font-magical text-white mb-2"></h3>
+            <p id="modal-desc" class="text-sm text-slate-300 mb-4 leading-relaxed"></p>
+
+            <div class="space-y-2 text-xs text-slate-400 border-t border-goldGlow/20 pt-4">
+              <div><strong class="text-starlight" data-i18n="modal_mat">Materiales / Técnica:</strong> <span id="modal-materials"></span></div>
+              <div><strong class="text-cyan-300" data-i18n="modal_symbol">Simbología Astrológica:</strong> <span id="modal-symbolism"></span></div>
+              <div><strong class="text-purple-300" data-i18n="modal_status">Estatus / Financiación:</strong> <span id="modal-status"></span></div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-goldGlow/20 flex items-center justify-between">
+            <span id="modal-price" class="text-xl font-extrabold text-gold-gradient"></span>
+            <a href="#contacto" onclick="closeModal()" class="px-5 py-2.5 rounded-full bg-starlight text-black text-xs font-bold hover:bg-goldGlow transition-all" data-i18n="modal_inquire">Consultar Adquisición</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // GALLERY DATA SET (8 Detailed Projects)
+    const galleryData = [
+      {
+        id: 1,
+        category: 'branding',
+        title: {
+          es: "Branding: El Despertar del Zodiaco",
+          en: "Branding: Awakening of the Zodiac",
+          pt: "Branding: O Despertar do Zodíaco",
+          fr: "Branding : L'Éveil du Zodiaque",
+          it: "Branding: El Despertar del Zodiaco",
+          de: "Branding: Erwachen des Tierkreises",
+          ru: "Брендинг: Пробуждение Зодиака",
+          zh: "品牌重塑：黄道十二宫的觉醒",
+          ja: "ブランディング：黄道十二星座の覚醒",
+          ar: "الهوية التجارية: صحوة الأبراج",
+          hi: "ब्रांडिंग: राशि चक्र का जागरण"
+        },
+        desc: {
+          es: "Identidad visual basada en la Rueda del Zodiaco y las casas astrológicas para un estudio holístico de prestigio.",
+          en: "Visual identity based on the Zodiac Wheel and astrological houses for a prestigious holistic studio.",
+          pt: "Identidade visual baseada na Roda do Zodíaco e casas astrológicas para um estúdio holístico de prestígio.",
+          fr: "Identité visuelle basée sur la roue du zodiaque et les maisons astrologiques pour un studio holistique prestigieux.",
+          it: "Identidad visual basada en la Rueda del Zodiaco y las casas astrológicas para un estudio holístico de prestigio.",
+          de: "Visuelle Identität basierend auf dem Tierkreisrad und astrologischen Häusern für ein renommiertes holistisches Studio.",
+          ru: "Визуальная айдентика на основе Зодиакального круга для престижной студии.",
+          zh: "基于黄道十二宫的高端品牌视觉标识。",
+          ja: "黄道十二星座に基づく高級ホリスティックスタジオのビジュアルアイデンティティ。",
+          ar: "هوية بصرية قائمة على عجلة الأبراج لمركز استشفائي مرموق.",
+          hi: "प्रतिष्ठित समग्र स्टूडियो के लिए राशि चक्र पर आधारित दृश्य पहचान।"
+        },
+        materials: "Vectores alquímicos, Tipografía dorada, Pan de oro digital",
+        symbolism: "Sol en Leo, Ascendente Escorpio, Trínos de Fuego",
+        status: "Colección Privada / Marca Registrada",
+        price: "$2,800",
+        img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 2,
+        category: 'packaging',
+        title: {
+          es: "Packaging Alquímico: Elixir Botánico",
+          en: "Alchemical Packaging: Botanical Elixir",
+          pt: "Packaging Alquímico: Elixir Botânico",
+          fr: "Packaging Alchimique : Élixir Botanique",
+          it: "Packaging Alquímico: Elixir Botánico",
+          de: "Alchemistische Verpackung: Botanisches Elixier",
+          ru: "Алхимическая упаковка: Ботанический Эликсир",
+          zh: "炼金术包装：草本仙液",
+          ja: "錬金術的パッケージ：ボタニカル・エリクサー",
+          ar: "تغليف الخيمياء: إكسير النباتات",
+          hi: "कीमियाई पैकेजिंग: वानस्पतिक अमृत"
+        },
+        desc: {
+          es: "Empaque de vidrio violeta grabado con símbolos del I Ching y sellos herméticos para aceites de plantas maestras.",
+          en: "Violet glass packaging engraved with I Ching symbols and hermetic seals for master plant oils.",
+          pt: "Embalagem de vidro violeta gravada com símbolos do I Ching e selos herméticos.",
+          fr: "Emballage en verre violet gravé de symboles du Yi King et de sceaux hermétiques.",
+          it: "Empaque de vidrio violeta grabado con símbolos del I Ching y sellos herméticos.",
+          de: "Violettglas-Verpackung mit I-Ging-Symbolen und hermetischen Siegeln.",
+          ru: "Упаковка из фиолетового стекла с символами И Цзин.",
+          zh: "刻有易经符文和密宗印章的紫罗兰玻璃瓶包装。",
+          ja: "易経のシンボルとヘルメス教の封印が刻まれたバイオレットガラス包装。",
+          ar: "عبوة زجاجية بنفسجية محفورة برموز إي تشينغ للأزيوت النباتية.",
+          hi: "मास्टर प्लांट तेलों के लिए आई चिंग प्रतीकों से उत्कीर्ण बैग।"
+        },
+        materials: "Vidrio fotoprotector, Relieve dorado, Papel de cáñamo",
+        symbolism: "Hexagrama 11 (La Paz), Alquimia de Venus",
+        status: "Disponible en Catálogo",
+        price: "$1,500",
+        img: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 3,
+        category: 'tarot',
+        title: {
+          es: "Arcano Cero: El Loco y la Psiquis Profunda",
+          en: "Arcanum Zero: The Fool & Deep Psyche",
+          pt: "Arcano Zero: O Louco e a Psique Profunda",
+          fr: "Arcane Zéro : Le Mat et la Psyché Profonde",
+          it: "Arcano Cero: El Loco y la Psiquis Profunda",
+          de: "Arkanum Null: Der Narr & Die Tiefenpsyche",
+          ru: "Аркан Ноль: Дурак и Глубокая Психика",
+          zh: "0号阿卡纳：愚人与深层心灵",
+          ja: "アルカナ0：愚者と深層心理",
+          ar: "البطاقة صفر: الأحمق والنفس العميقة",
+          hi: "अर्केन शून्य: मूर्ख और गहरा मानस"
+        },
+        desc: {
+          es: "Lienzo de gran formato que explora el arquetipo del salto al vacío según la psicología junguiana y el Tarot.",
+          en: "Large format canvas exploring the leap of faith archetype based on Jungian psychology and Tarot.",
+          pt: "Tela de grande formato explorando o arquétipo do salto no vazio de acordo com Jung.",
+          fr: "Toile grand format explorant l'archétype du saut dans le vide selon la psychologie jungienne.",
+          it: "Lienzo de gran formato que explora el arquetipo del salto al vacío según la psicología junguiana.",
+          de: "Großformatige Leinwand, die den Archetypen des Narrs nach C.G. Jung erforscht.",
+          ru: "Крупноформатный холст, исследующий архетип Прыжка в бездну по Юнгу.",
+          zh: "基于荣格心理学与塔罗牌的大幅面画作。",
+          ja: "ユング心理学とタローに基づく「愚者」の原型を探求した大判キャンバス。",
+          ar: "لوحة قماشية كبيرة تستكشف قفزة الإيمان وفقًا لعلم النفس اليونغي.",
+          hi: "जंगियन मनोविज्ञान और टैरो पर आधारित बड़ा कैनवास।"
+        },
+        materials: "Óleo, Pigmentos nocturnos, Láminas de latón curado",
+        symbolism: "Urano, El Abismo, El Inconsciente Colectivo",
+        status: "Obra Patronada por Mecenas",
+        price: "$4,200",
+        img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 4,
+        category: 'tarot',
+        title: {
+          es: "Hexagrama 1: El Cielo y el I Ching Transpersonal",
+          en: "Hexagram 1: The Creative & Transpersonal I Ching",
+          pt: "Hexagrama 1: O Céu e o I Ching Transpessoal",
+          fr: "Hexagramme 1 : Le Ciel et le Yi King Transpersonnel",
+          it: "Hexagrama 1: El Cielo y el I Ching Transpersonal",
+          de: "Hexagramm 1: Das Schöpferische & Transpersonales I-Ging",
+          ru: "Гексаграмма 1: Творчество и Трансперсональный И Цзин",
+          zh: "乾卦第一：天与超个人易经",
+          ja: "易経・乾為天：創造とトランスパーソナル芸術",
+          ar: "السداسية 1: السماء وإي تشينغ التجاوزي",
+          hi: "हेक्साग्राम 1: द क्रिएटिव एंड ट्रांसपर्सनल आई चिंग"
+        },
+        desc: {
+          es: "Composición geométrica dorada con seis líneas yang de energía pura cósmica y orden universal.",
+          en: "Golden geometric composition featuring six solid yang lines of pure cosmic energy.",
+          pt: "Composição geométrica dourada com seis linhas yang de energia cósmica pura.",
+          fr: "Composition géométrique dorée avec six lignes yang d'énergie cosmique pure.",
+          it: "Composición geométrica dorada con seis líneas yang de energía pura cósmica.",
+          de: "Goldene geometrische Komposition mit sechs Yang-Linien reiner kosmischer Energie.",
+          ru: "Золотая геометрическая композиция из шести сплошных линий Янь.",
+          zh: "由六条纯阳线组成的金色几何宇宙构图。",
+          ja: "純粋な宇宙エネルギーを表す6本の陽線で構成された金色幾何学作品。",
+          ar: "تكوين هندسي ذهبي يحتوي على ستة خطوط يانغ صلبة من الطاقة الكونية.",
+          hi: "शुद्ध ब्रह्मांडीय ऊर्जा की छह यांग रेखाओं वाली स्वर्ण ज्यामितीय रचना।"
+        },
+        materials: "Tinta china, Acrílico metalizado, Madera de nogal",
+        symbolism: "Ch'ien (Lo Creativo), Principio Masculino Cósmico",
+        status: "Disponible",
+        price: "$2,100",
+        img: "https://images.unsplash.com/photo-1507499739999-097706ad8914?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 5,
+        category: 'plantas',
+        title: {
+          es: "Constelación Interior: Mapeo de la Psiquis",
+          en: "Inner Constellation: Psyche Mapping",
+          pt: "Constelação Interior: Mapeamento da Psique",
+          fr: "Constellation Intérieure : Cartographie de la Psyché",
+          it: "Constelación Interior: Mapeo de la Psiquis",
+          de: "Innere Konstellation: Kartierung der Psyche",
+          ru: "Внутреннее Созвездие: Картографирование Психики",
+          zh: "内在星宿：心灵与潜意识图谱",
+          ja: "インナー・コンステレーション：精神の投影図",
+          ar: "الكوكبة الداخلية: رسم خريطة النفس",
+          hi: "आंतरिक नक्षत्र: मानस मानचित्रण"
+        },
+        desc: {
+          es: "Representación visual de visiones de meditación profunda con flora sagrada e hilos del mapa del alma.",
+          en: "Visual representation of deep meditation visions using sacred flora and soul map threads.",
+          pt: "Representação visual de visões de meditação profunda com flora sagrada.",
+          fr: "Représentation visuelle de visions de méditation profonde avec une flore sacrée.",
+          it: "Representación visual de visiones de meditación profunda con flora sagrada.",
+          de: "Visuelle Darstellung von tiefen Meditationsvisionen mit heiliger Flora.",
+          ru: "Визуальное воплощение медитативных видений с использованием священных растений.",
+          zh: "结合神圣植物与灵魂之线的深层冥想视觉呈现。",
+          ja: "神聖な植物と魂の糸を用いた深層瞑想の視覚的表現。",
+          ar: "تمثيل بصري لرؤى التأمل العميق باستخدام النباتات المقدسة.",
+          hi: "पवित्र वनस्पतियों और आत्मा मानचित्र का उपयोग करके ध्यान दृश्यों का चित्रण।"
+        },
+        materials: "Pigmentos botánicos de San Pedro y Ayahuasca, Mixta",
+        symbolism: "Neptuno, Casa XII, Expansión de Conciencia",
+        status: "Mecenazgo Financiado",
+        price: "$3,800",
+        img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 6,
+        category: 'packaging',
+        title: {
+          es: "Edición de Lujo: El Libro Sagrado de las Plantas",
+          en: "Deluxe Edition: The Sacred Book of Plants",
+          pt: "Edição de Luxo: O Livro Sagrado das Plantas",
+          fr: "Édition de Luxe : Le Livre Sacré des Plantes",
+          it: "Edición de Lujo: El Libro Sagrado de las Plantas",
+          de: "Deluxe-Ausgabe: Das heilige Buch der Pflanzen",
+          ru: "Роскошное издание: Священная книга растений",
+          zh: "奢华精装典藏：神圣植物之书",
+          ja: "デラックス版：神聖植物の書",
+          ar: "إصدار فاخر: كتاب النباتات المقدسة",
+          hi: "डीलक्स संस्करण: पौधों की पवित्र पुस्तक"
+        },
+        desc: {
+          es: "Encuadernación artesanal en piel sintética negra con grabados dorados y caja de presentación en roble.",
+          en: "Handcrafted binding with gold foil etchings and an oak wood presentation box.",
+          pt: "Encadernação artesanal em pele sintética preta com gravuras douradas.",
+          fr: "Reliure artisanale avec gravures à la feuille d'or et coffret en chêne.",
+          it: "Encuadernación artesanal en piel sintética negra con grabados dorados.",
+          de: "Handgefertigter Einband mit Goldprägung und Präsentationsbox aus Eichenholz.",
+          ru: "Ручной переплет с золотым тиснением в дубовой шкатулке.",
+          zh: "手工金箔雕刻烫金黑皮精装与橡木礼盒。",
+          ja: "金箔押しが施された手製本とオーク材の専用ボックス。",
+          ar: "تجليد يدوي مع نقش بالورق الذهبي وصندوق تقديم من wooden.",
+          hi: "स्वर्ण पन्नी नक्काशी और ओक प्रस्तुति बॉक्स के साथ हस्तनिर्मित बाइंडिंग।"
+        },
+        materials: "Pan de oro de 24k, Papel de algodón 300g, Madera",
+        symbolism: "Alquimia botánica, Los 4 Elementos",
+        status: "Edición Limitada (12 piezas)",
+        price: "$1,850",
+        img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 7,
+        category: 'patronadas',
+        title: {
+          es: "Carta Astral Colectiva (Mecenazgo)",
+          en: "Collective Astral Chart (Patronage)",
+          pt: "Carta Astral Coletiva (Mecenato)",
+          fr: "Carte Astrale Collective (Mécénat)",
+          it: "Carta Astral Colectiva (Mecenazgo)",
+          de: "Kollektives Horoskop (Mäzenatentum)",
+          ru: "Коллективная Астральная Карта (Меценатство)",
+          zh: "集体星盘（赞助人定制）",
+          ja: "集団アストラル・チャート（メセナ作品）",
+          ar: "خريطة فلكية جماعية (برعاية)",
+          hi: "सामूहिक एस्ट्रल चार्ट (संरक्षण)"
+        },
+        desc: {
+          es: "Obra de gran escala financiada por 12 mecenas, donde cada uno aportó su posición planetaria exacta.",
+          en: "Large-scale artwork financed by 12 patrons, each contributing their exact planetary positioning.",
+          pt: "Obra de grande escala financiada por 12 mecenas com posições planetárias.",
+          fr: "Œuvre à grande échelle financée par 12 mécènes apportant leurs positions planétaires.",
+          it: "Obra de gran escala financiada por 12 mecenas con sus posiciones planetarias.",
+          de: "Großes Kunstwerk, finanziert von 12 Mäzenen mit ihren planetaren Positionen.",
+          ru: "Масштабное полотно, профинансированное 12 меценатами.",
+          zh: "由12位赞助人共同出资定制的大型星体定位连结画作。",
+          ja: "12人のパトロンによって支援された、個々の惑星配置を融合した大作。",
+          ar: "عمل فني كبير تم تمويله من قبل 12 راعيًا وفقًا لمواقعهم الفلكية.",
+          hi: "12 संरक्षकों द्वारा वित्तपोषित बड़े पैमाने की कलाकृति।"
+        },
+        materials: "Mural de lino, Polvo de cuarzo, Pigmentos estelares",
+        symbolism: "Sincronicidad, Red Cósmica del Inconsciente",
+        status: "Exhibición Permanente",
+        price: "$6,000 (Financiado)",
+        img: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 8,
+        category: 'patronadas',
+        title: {
+          es: "Altar Cósmico de Cuarzo y Estrellas",
+          en: "Cosmic Quartz & Stars Altar",
+          pt: "Altar Cósmico de Quartzo e Estrelas",
+          fr: "Autel Cosmique de Quartz et d'Étoiles",
+          it: "Altar Cósmico de Cuarzo y Estrellas",
+          de: "Kosmischer Quarz- & Sternenaltar",
+          ru: "Космический Алтарь из Кварца и Звезд",
+          zh: "石英与繁星宇宙祭坛",
+          ja: "水晶と星の宇宙の祭壇",
+          ar: "مذبح الكوارتز والنجوم الكوني",
+          hi: "ब्रह्मांडीय क्वार्ट्ज और सितारे वेदी"
+        },
+        desc: {
+          es: "Instalación escultórica tridimensional con cristales de cuarzo maestros alineados a la Constelación de Orión.",
+          en: "Three-dimensional sculptural installation featuring master quartz crystals aligned to Orion.",
+          pt: "Instalação de escultura tridimensional com cristais de quartzo e Constelação de Órion.",
+          fr: "Installation sculpturale 3D avec cristaux de quartz alignés sur la constellation d'Orion.",
+          it: "Instalación escultórica tridimensional con cristales de cuarzo y Constelación de Orión.",
+          de: "Dreidimensionale Skulptureninstallation mit Quarzskulpturen ausgerichtet nach Orion.",
+          ru: "Трехмерная инсталляция с кварцем, ориентированная на Созвездие Ориона.",
+          zh: "对齐猎户座的 Master 级水晶三维雕塑艺术装置。",
+          ja: "オリオン座に合わせて配置されたマスタークォーツ水晶の3D彫刻装置。",
+          ar: "منحوتة ثلاثية الأبعاد تحتوي على بلورات الكوارتز المحاذية لكوكبة الجبار.",
+          hi: "ओरियन के संरेखित मास्टर क्वार्ट्ज क्रिस्टल वाली मूर्तिकला।"
+        },
+        materials: "Cuarzo hialino, Cobre electroformado, Luz estelar LED",
+        symbolism: "Cinturón de Orión, Geometría Sagrada de la Tierra",
+        status: "Colección Privada Mecenas Guía",
+        price: "$8,500",
+        img: "https://images.unsplash.com/photo-1515260268569-9271009adfdb?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    // TRANSLATION DICTIONARY (11 Languages)
+    const translations = {
+      es: {
+        nav_gallery: "Galería & Catálogo",
+        nav_patronage: "Mecenazgo",
+        nav_philosophy: "Filosofía",
+        nav_contact: "Encargos",
+        hero_badge: "Branding Alquímico & Arte Simbólico Transpersonal",
+        hero_title_1: "Donde la Psiquis y el Cosmos",
+        hero_title_2: "Se Manifestan en Arte & Marca",
+        hero_description: "Creamos identidades de branding astrológico, empaques alquímicos y obras de arte sagradas financiada por mecenas. Fusionamos los arquetipos del Tarot, el I Ching, las plantas maestras y la astronomía del inconsciente.",
+        hero_btn_explore: "Explorar Catálogo",
+        hero_btn_custom: "Solicitar Obra Personalizada",
+        metric_works: "Obras & Marcas Alquímicas",
+        metric_zodiac: "Casas Astrológicas Mapeadas",
+        metric_patrons: "Mecenas Activos",
+        metric_hexagrams: "Hexagramas del I Ching",
+        gallery_title: "Catálogo & Galería de Alquimia Visual",
+        gallery_subtitle: "Explora proyectos donde el lujo estético abraza los conocimientos esotéricos, las plantas sagradas y la psicología profunda del inconsciente.",
+        filter_all: "Todos",
+        filter_branding: "Branding Astrológico",
+        filter_packaging: "Packaging Alquímico",
+        filter_tarot: "Tarot & I Ching",
+        filter_plantas: "Plantas Sagradas & Psiquis",
+        filter_patronadas: "Obras Financiadas / Mecenazgo",
+        patron_badge: "Co-Creación & Financiación Privada",
+        patron_title: "Niveles de Mecenazgo Cósmico",
+        patron_subtitle: "Financia obras de arte personalizadas e investigaciones simbólicas. Como mecenas, tu energía y signo astrológico quedan inmortalizados en la obra.",
+        tier1_title: "Iniciado Astral",
+        tier1_desc: "Para quienes apoyan la creación continua de sellos y grabados simbólicos.",
+        tier1_f1: "Nombre en la bitácora del proyecto",
+        tier1_f2: "Imprensión numerada serigrafiada",
+        tier1_f3: "Certificado codificado astrologicamente",
+        tier2_title: "Alquimista Guía",
+        tier2_desc: "Financia directamente lienzos y proyectos de branding místico a medida.",
+        tier2_f1: "Inclusión de carta natal en la composición",
+        tier2_f2: "Pieza física original con pan de oro",
+        tier2_f3: "Consulta previa de intencionalidad",
+        tier2_f4: "Caja de empaque personalizada",
+        tier3_title: "Guardián del Cosmos",
+        tier3_desc: "Financiación total de altares tridimensionales e instalaciones místicas completas.",
+        tier3_f1: "Obra monumental única y exclusiva",
+        tier3_f2: "Co-titularidad de derechos de exhibición",
+        tier3_f3: "Ritual de consagración de la pieza",
+        tier3_f4: "Libro de artista encuadernado a mano",
+        tier_btn: "Mecenar Nivel",
+        popular: "Más Elegido",
+        philo_badge: "Fundamento Simbólico",
+        philo_title: "Símbolos, Psiquis y Geometría Sagrada",
+        p1_title: "Astrología Transpersonal",
+        p1_desc: "Mapeamos tránsitos planetarios e hilos zodiacales para infundir arquetipos vivos en cada línea de diseño.",
+        p2_title: "I Ching & Arcanos",
+        p2_desc: "Las dinámicas del cambio del I Ching combinadas con la profundidad psicológica de los Arcanos Mayores.",
+        p3_title: "Plantas Sagradas",
+        p3_desc: "Visualización de estados modificados de conciencia mediante pigmentos botánicos y patrones de flora sagrada.",
+        p4_title: "Geometría del Inconsciente",
+        p4_desc: "Traducimos sueños, sombras e impulsos del inconsciente colectivo en empaques y arte visual de prestigio.",
+        form_title: "Solicitar Encargo o Proyecto de Mecenazgo",
+        form_subtitle: "Completa los datos para iniciar la sincronía alquímica de tu proyecto visual.",
+        form_name: "Nombre Completo",
+        form_email: "Correo Electrónico",
+        form_intent: "Intención del Proyecto",
+        intent_opt1: "Branding & Identidad Astrológica",
+        intent_opt2: "Diseño de Packaging Alquímico",
+        intent_opt3: "Obra de Tarot o I Ching Personalizada",
+        intent_opt4: "Arte de Plantas Sagradas & Psiquis",
+        intent_opt5: "Financiación / Mecenazgo Directo",
+        form_zodiac: "Signo Zodiacal / Elemento de Interés",
+        form_details: "Detalles de la Visión o Arquetipos deseados",
+        form_btn: "Enviar Solicitud Mística",
+        form_success: "¡Tu mensaje ha sido enviado a través del éter! Te responderemos en la próxima alineación favorable.",
+        modal_mat: "Materiales / Técnica:",
+        modal_symbol: "Simbología Astrológica:",
+        modal_status: "Estatus / Financiación:",
+        modal_inquire: "Consultar Adquisición",
+        btn_view_detail: "Ver Detalle Místico"
+      },
+      en: {
+        nav_gallery: "Gallery & Catalog",
+        nav_patronage: "Patronage",
+        nav_philosophy: "Philosophy",
+        nav_contact: "Commissions",
+        hero_badge: "Alchemical Branding & Transpersonal Symbolic Art",
+        hero_title_1: "Where Psyche & Cosmos",
+        hero_title_2: "Manifest in Art & Brand",
+        hero_description: "We craft astrological branding identities, alchemical packaging, and patron-financed sacred artworks. Merging Tarot archetypes, I Ching, master plants, and the unconscious cosmos.",
+        hero_btn_explore: "Explore Catalog",
+        hero_btn_custom: "Request Custom Artwork",
+        metric_works: "Alchemical Works & Brands",
+        metric_zodiac: "Mapped Zodiac Houses",
+        metric_patrons: "Active Patrons",
+        metric_hexagrams: "I Ching Hexagrams",
+        gallery_title: "Visual Alchemy Catalog & Gallery",
+        gallery_subtitle: "Discover luxury projects where aesthetic refinement merges with esoteric wisdom, master plants, and deep psychological archetypes.",
+        filter_all: "All",
+        filter_branding: "Astrological Branding",
+        filter_packaging: "Alchemical Packaging",
+        filter_tarot: "Tarot & I Ching",
+        filter_plantas: "Sacred Plants & Psyche",
+        filter_patronadas: "Patron Funded Works",
+        patron_badge: "Co-Creation & Private Funding",
+        patron_title: "Cosmic Patronage Tiers",
+        patron_subtitle: "Fund bespoke artworks and symbolic research. As a patron, your energetic signature and zodiac chart are woven into the piece.",
+        tier1_title: "Astral Initiate",
+        tier1_desc: "For supporters of ongoing symbolic seals and printmaking.",
+        tier1_f1: "Name listed in the project logbook",
+        tier1_f2: "Numbered screenprint edition",
+        tier1_f3: "Astrologically encoded certificate",
+        tier2_title: "Guiding Alchemist",
+        tier2_desc: "Directly funds commissioned canvases and bespoke mystic branding.",
+        tier2_f1: "Natal chart integration in artwork",
+        tier2_f2: "Original physical piece with gold leaf",
+        tier2_f3: "Intention & alignment consultation",
+        tier2_f4: "Custom luxury packaging box",
+        tier3_title: "Guardian of the Cosmos",
+        tier3_desc: "Full funding for 3D altars and complete mystical installations.",
+        tier3_f1: "Monumental, exclusive one-of-a-kind piece",
+        tier3_f2: "Co-ownership of exhibition rights",
+        tier3_f3: "Consecration ritual for the artwork",
+        tier3_f4: "Hand-bound artist journal book",
+        tier_btn: "Become a Patron",
+        popular: "Most Popular",
+        philo_badge: "Symbolic Foundation",
+        philo_title: "Symbols, Psyche & Sacred Geometry",
+        p1_title: "Transpersonal Astrology",
+        p1_desc: "Mapping planetary transits and zodiacal lines into live design archetypes.",
+        p2_title: "I Ching & Arcanum",
+        p2_desc: "Dynamic wisdom of the I Ching combined with psychological Tarot archetypes.",
+        p3_title: "Sacred Master Plants",
+        p3_desc: "Visualizing altered states of consciousness via organic pigments and flora geometry.",
+        p4_title: "Unconscious Geometry",
+        p4_desc: "Translating collective dreams and shadow archetypes into luxury visual art.",
+        form_title: "Commission or Patronage Application",
+        form_subtitle: "Submit your details to ignite the alchemical synergy of your project.",
+        form_name: "Full Name",
+        form_email: "Email Address",
+        form_intent: "Project Intent",
+        intent_opt1: "Astrological Branding & Identity",
+        intent_opt2: "Alchemical Packaging Design",
+        intent_opt3: "Custom Tarot or I Ching Artwork",
+        intent_opt4: "Sacred Plants & Psyche Art",
+        intent_opt5: "Direct Financial Patronage",
+        form_zodiac: "Zodiac Sign / Element of Focus",
+        form_details: "Vision & Archetype Details",
+        form_btn: "Send Mystic Inquiry",
+        form_success: "✨ Your message has traveled through the ether! We will reply during the next favorable planetary alignment.",
+        modal_mat: "Materials / Technique:",
+        modal_symbol: "Astrological Symbolism:",
+        modal_status: "Status / Funding:",
+        modal_inquire: "Inquire Purchase",
+        btn_view_detail: "View Mystic Details"
+      },
+      pt: {
+        nav_gallery: "Galeria & Catálogo",
+        nav_patronage: "Mecenato",
+        nav_philosophy: "Filosofia",
+        nav_contact: "Encomendas",
+        hero_badge: "Branding Alquímico & Arte Simbólica Transpessoal",
+        hero_title_1: "Onde a Psique e o Cosmos",
+        hero_title_2: "Se Manifestam em Arte & Marca",
+        hero_description: "Criamos marcas astrológicas, embalagens alquímicas e obras de arte sagradas financiadas por mecenas. Unindo o Tarot, I Ching, plantas mestras e a astrologia do inconsciente.",
+        hero_btn_explore: "Explorar Catálogo",
+        hero_btn_custom: "Solicitar Obra Personalizada",
+        metric_works: "Obras & Marcas Alquímicas",
+        metric_zodiac: "Casas Astrológicas Mapeadas",
+        metric_patrons: "Mecenas Ativos",
+        metric_hexagrams: "Hexagramas do I Ching",
+        gallery_title: "Catálogo de Alquimia Visual",
+        gallery_subtitle: "Projetos de luxo onde o rigor estético encontra o esoterismo, plantas sagradas e a psicologia profunda.",
+        filter_all: "Todos",
+        filter_branding: "Branding Astrológico",
+        filter_packaging: "Embalagem Alquímica",
+        filter_tarot: "Tarot & I Ching",
+        filter_plantas: "Plantas Sagradas & Psique",
+        filter_patronadas: "Obras Financiadas",
+        patron_badge: "Co-Criação & Financiamento",
+        patron_title: "Níveis de Mecenato Cósmico",
+        patron_subtitle: "Financie obras personalizadas. Sua assinatura energética e signo serão imortalizados na peça.",
+        tier1_title: "Iniciado Astral",
+        tier1_desc: "Para apoiadores da criação de selos e gravuras.",
+        tier1_f1: "Nome registrado no livro do projeto",
+        tier1_f2: "Impressão numerada e assinada",
+        tier1_f3: "Certificado astrologicamente codificado",
+        tier2_title: "Alquimista Guia",
+        tier2_desc: "Financia diretamente telas e branding místico sob medida.",
+        tier2_f1: "Mapa astral integrado à composição",
+        tier2_f2: "Peça física original com folha de ouro",
+        tier2_f3: "Consulta prévia de intenção",
+        tier2_f4: "Caixa de embalagem personalizada",
+        tier3_title: "Guardião do Cosmos",
+        tier3_desc: "Financiamento total para altares 3D e instalações completas.",
+        tier3_f1: "Obra monumental única e exclusiva",
+        tier3_f2: "Co-propriedade de direitos de exibição",
+        tier3_f3: "Ritual de consagração da peça",
+        tier3_f4: "Livro do artista encadernado à mão",
+        tier_btn: "Ser Mecenas",
+        popular: "Mais Escolhido",
+        philo_badge: "Fundamento Simbólico",
+        philo_title: "Símbolos, Psique & Geometria Sagrada",
+        p1_title: "Astrologia Transpessoal",
+        p1_desc: "Mapeamento dos trânsitos planetários na linguagem de design.",
+        p2_title: "I Ching & Arcanos",
+        p2_desc: "A sabedoria mutável do I Ching unida aos arquétipos do Tarot.",
+        p3_title: "Plantas Sagradas",
+        p3_desc: "Estados alterados de consciência retratados com pigmentos orgânicos.",
+        p4_title: "Geometria do Inconsciente",
+        p4_desc: "Tradução de sonhos e sombras em arte visual e embalagens de prestígio.",
+        form_title: "Solicitar Encomenda ou Mecenato",
+        form_subtitle: "Preencha os dados para iniciar a sinergia alquímica do seu projeto.",
+        form_name: "Nome Completo",
+        form_email: "E-mail",
+        form_intent: "Intenção do Projeto",
+        intent_opt1: "Branding & Identidade Astrológica",
+        intent_opt2: "Design de Embalagem Alquímica",
+        intent_opt3: "Arte de Tarot ou I Ching Personalizada",
+        intent_opt4: "Arte de Plantas Sagradas",
+        intent_opt5: "Financiamento / Mecenato",
+        form_zodiac: "Signo / Elemento de Foco",
+        form_details: "Detalhes da Visão",
+        form_btn: "Enviar Solicitação Mística",
+        form_success: "✨ Sua mensagem viajou pelo éter! Responderemos na próxima alinhamento favorável.",
+        modal_mat: "Materiais / Técnica:",
+        modal_symbol: "Simbologia Astrológica:",
+        modal_status: "Status / Financiamento:",
+        modal_inquire: "Consultar Aquisição",
+        btn_view_detail: "Ver Detalhes Místicos"
+      },
+      fr: {
+        nav_gallery: "Galerie & Catalogue",
+        nav_patronage: "Mécénat",
+        nav_philosophy: "Philosophie",
+        nav_contact: "Commandes",
+        hero_badge: "Branding Alchimique & Art Symbolique Transpersonnel",
+        hero_title_1: "Où la Psyché et le Cosmos",
+        hero_title_2: "Se Manifestent en Art & Marque",
+        hero_description: "Nous créons des identités de marque astrologiques, des emballages alchimiques et des œuvres sacrées financées par des mécènes.",
+        hero_btn_explore: "Explorer le Catalogue",
+        hero_btn_custom: "Demander une Œuvre Sur Mesure",
+        metric_works: "Œuvres & Marques Alchimiques",
+        metric_zodiac: "Maisons Astrologiques Cartographiées",
+        metric_patrons: "Mécènes Actifs",
+        metric_hexagrams: "Hexagrammes du Yi King",
+        gallery_title: "Catalogue d'Alchimie Visuelle",
+        gallery_subtitle: "Projets d'exception alliant raffinement visuel, ésotérisme, plantes sacrées et psychologie jungienne.",
+        filter_all: "Tous",
+        filter_branding: "Branding Astrologique",
+        filter_packaging: "Packaging Alchimique",
+        filter_tarot: "Tarot & Yi King",
+        filter_plantas: "Plantes Sacrées & Psyché",
+        filter_patronadas: "Œuvres Financées par Mécènes",
+        patron_badge: "Co-Création & Mécénat Privé",
+        patron_title: "Niveaux de Mécénat Cosmique",
+        patron_subtitle: "Financez des œuvres personnalisées. Votre empreinte astrologique sera intégrée dans l'œuvre.",
+        tier1_title: "Initiations Astrale",
+        tier1_desc: "Soutien à la création continue de sceaux et gravures.",
+        tier1_f1: "Nom dans le registre du projet",
+        tier1_f2: "Sérigraphie numérotée",
+        tier1_f3: "Certificat codé astrologiquement",
+        tier2_title: "Alchimiste Guide",
+        tier2_desc: "Financement direct de toiles et de branding mystique sur mesure.",
+        tier2_f1: "Intégration du thème astral dans l'œuvre",
+        tier2_f2: "Œuvre originale avec feuille d'or",
+        tier2_f3: "Consultation préalable d'alignement",
+        tier2_f4: "Coffret de luxe personnalisé",
+        tier3_title: "Gardien du Cosmos",
+        tier3_desc: "Financement intégral d'autels 3D et d'installations mystiques.",
+        tier3_f1: "Œuvre monumentale unique et exclusive",
+        tier3_f2: "Co-propriété des droits d'exposition",
+        tier3_f3: "Rituel de consécration de l'œuvre",
+        tier3_f4: "Livre d'artiste relié à la main",
+        tier_btn: "Devenir Mécène",
+        popular: "Le plus populaire",
+        philo_badge: "Fondement Symbolique",
+        philo_title: "Symboles, Psyché & Géométrie Sacrée",
+        p1_title: "Astrologie Transpersonnelle",
+        p1_desc: "Cartographie des transits planétaires dans le design.",
+        p2_title: "Yi King & Arcanes",
+        p2_desc: "Sagesse du Yi King associée aux archétypes du Tarot.",
+        p3_title: "Plantes Sacrées",
+        p3_desc: "États modifiés de conscience exprimés par des pigments naturels.",
+        p4_title: "Géométrie de l'Inconscient",
+        p4_desc: "Traduction des rêves et archétypes en œuvres d'art visuel de prestige.",
+        form_title: "Demande de Commande ou Mécénat",
+        form_subtitle: "Remplissez le formulaire pour démarrer la synergie alchimique.",
+        form_name: "Nom Complet",
+        form_email: "Adresse E-mail",
+        form_intent: "Intention du Projet",
+        intent_opt1: "Branding & Identité Astrologique",
+        intent_opt2: "Packaging Alchimique",
+        intent_opt3: "Œuvre de Tarot ou Yi King",
+        intent_opt4: "Art des Plantes Sacrées",
+        intent_opt5: "Mécénat Financier Direct",
+        form_zodiac: "Signe Astrologique / Élément",
+        form_details: "Détails de la Vision",
+        form_btn: "Envoyer la Demande Mystique",
+        form_success: "✨ Votre message a traversé l'éther ! Nous répondrons lors du prochain alignement favorable.",
+        modal_mat: "Matériaux / Technique :",
+        modal_symbol: "Symbolisme Astrologique :",
+        modal_status: "Statut / Financement :",
+        modal_inquire: "Demander l'Acquisition",
+        btn_view_detail: "Voir Détails Mystiques"
+      },
+      it: {
+        nav_gallery: "Galleria & Catalogo",
+        nav_patronage: "Mecenatismo",
+        nav_philosophy: "Filosofia",
+        nav_contact: "Commissioni",
+        hero_badge: "Branding Alchemico & Arte Simbolica Transpersonale",
+        hero_title_1: "Dove la Psiche e il Cosmo",
+        hero_title_2: "Si Manifestano in Arte & Brand",
+        hero_description: "Creiamo identità di marca astrologiche, packaging alchemico e opere d'arte sacra finanziate da mecenati.",
+        hero_btn_explore: "Esplora Catalogo",
+        hero_btn_custom: "Richiedi Opera Personalizzata",
+        metric_works: "Opere & Brand Alchemici",
+        metric_zodiac: "Case Astrologiche Mappate",
+        metric_patrons: "Mecenati Attivi",
+        metric_hexagrams: "Esagrammi dell'I Ching",
+        gallery_title: "Catalogo di Alchimia Visiva",
+        gallery_subtitle: "Progetti di lusso che fondono raffinatezza estetica, piante sacre e la psicologia del profondo.",
+        filter_all: "Tutti",
+        filter_branding: "Branding Astrologico",
+        filter_packaging: "Packaging Alchemico",
+        filter_tarot: "Tarocchi & I Ching",
+        filter_plantas: "Piante Sacre & Psiche",
+        filter_patronadas: "Opere Finanziate",
+        patron_badge: "Co-Creazione & Finanziamento",
+        patron_title: "Livelli di Mecenatismo Cosmico",
+        patron_subtitle: "Finanzia opere d'arte su misura. Il tuo segno zodiacale sarà impresso nell'opera.",
+        tier1_title: "Iniziato Astrale",
+        tier1_desc: "Per chi sostiene la creazione continua di sigilli e incisioni.",
+        tier1_f1: "Nome nel registro del progetto",
+        tier1_f2: "Stampa serigrafata numerata",
+        tier1_f3: "Certificato codificato astrologicamente",
+        tier2_title: "Alchimista Guida",
+        tier2_desc: "Finanzia direttamente tele e branding mistico personalizzato.",
+        tier2_f1: "Mappa natale integrata nell'opera",
+        tier2_f2: "Pezzo originale con foglia d'oro",
+        tier2_f3: "Consultazione preliminare",
+        tier2_f4: "Scatola di confezionamento personalizzata",
+        tier3_title: "Guardiano del Cosmo",
+        tier3_desc: "Finanziamento totale di altari 3D e installazioni mistiche.",
+        tier3_f1: "Opera monumentale unica ed esclusiva",
+        tier3_f2: "Comproprietà dei diritti di esibizione",
+        tier3_f3: "Rito di consacrazione dell'opera",
+        tier3_f4: "Libro d'artista rilegato a mano",
+        tier_btn: "Diventa Mecenate",
+        popular: "Il Più Scelto",
+        philo_badge: "Fondamento Simbolico",
+        philo_title: "Simboli, Psiche & Geometria Sacra",
+        p1_title: "Astrologia Transpersonale",
+        p1_desc: "Mappatura dei transiti planetari nel design visivo.",
+        p2_title: "I Ching & Arcani",
+        p2_desc: "I Ching unito agli archetipi psicologici dei Tarocchi.",
+        p3_title: "Piante Sacre",
+        p3_desc: "Stati di coscienza raffigurati con pigmenti botanici.",
+        p4_title: "Geometria dell'Inconscio",
+        p4_desc: "Sogni e ombre trasformati in packaging e opere di prestigio.",
+        form_title: "Richiesta Commissione o Mecenatismo",
+        form_subtitle: "Compila i dati per avviare la sinergia alchemica.",
+        form_name: "Nome Completo",
+        form_email: "Indirizzo Email",
+        form_intent: "Intenzione del Progetto",
+        intent_opt1: "Branding & Identità Astrologica",
+        intent_opt2: "Design Packaging Alchemico",
+        intent_opt3: "Opera Tarocchi o I Ching",
+        intent_opt4: "Arte Piante Sacre & Psiche",
+        intent_opt5: "Mecenatismo Diretto",
+        form_zodiac: "Segno Zodiacale / Elemento",
+        form_details: "Dettagli della Visione",
+        form_btn: "Invia Richiesta Mistica",
+        form_success: "✨ Il tuo messaggio è viaggato attraverso l'etere! Risponderemo alla prossima allineamento favorevole.",
+        modal_mat: "Materiali / Tecnica:",
+        modal_symbol: "Simbologia Astrologica:",
+        modal_status: "Stato / Finanziamento:",
+        modal_inquire: "Richiedi Acquisto",
+        btn_view_detail: "Vedi Dettagli Mistici"
+      },
+      de: {
+        nav_gallery: "Galerie & Katalog",
+        nav_patronage: "Mäzenatentum",
+        nav_philosophy: "Philosophie",
+        nav_contact: "Aufträge",
+        hero_badge: "Alchemistische Markenentwicklung & Symbolische Kunst",
+        hero_title_1: "Wo Psyche & Kosmos",
+        hero_title_2: "Sich in Kunst & Marke Manifestieren",
+        hero_description: "Wir erschaffen astrologische Markenidentitäten, alchemistische Verpackungen und von Mäzenen finanzierte sakrale Kunstwerke.",
+        hero_btn_explore: "Katalog Erkunden",
+        hero_btn_custom: "Individuelles Kunstwerk Anfragen",
+        metric_works: "Alchemistische Werke & Marken",
+        metric_zodiac: "Kartierte Tierkreis-Häuser",
+        metric_patrons: "Aktive Mäzene",
+        metric_hexagrams: "I-Ging-Hexagramme",
+        gallery_title: "Katalog der Visuellen Alchemie",
+        gallery_subtitle: "Luxusprojekte, die ästhetische Raffinesse mit Esoterik, heiligen Pflanzen und tiefenpsychologischen Archetypen verbinden.",
+        filter_all: "Alle",
+        filter_branding: "Astrologisches Branding",
+        filter_packaging: "Alchemistische Verpackung",
+        filter_tarot: "Tarot & I-Ging",
+        filter_plantas: "Heilpflanzen & Psyche",
+        filter_patronadas: "Geförderte Werke",
+        patron_badge: "Co-Kreation & Private Förderung",
+        patron_title: "Stufen des Kosmischen Mäzenatentums",
+        patron_subtitle: "Finanzieren Sie maßgeschneiderte Kunstwerke. Ihre energetische Signatur wird im Werk verewigt.",
+        tier1_title: "Astraler Initiat",
+        tier1_desc: "Für Förderer von fortlaufenden Symbolsiegeln und Druckgrafiken.",
+        tier1_f1: "Name im Projekt-Logbuch",
+        tier1_f2: "Nummerierte Siebdruck-Edition",
+        tier1_f3: "Astrologisch kodiertes Zertifikat",
+        tier2_title: "Führender Alchemist",
+        tier2_desc: "Finanziert direkt Leinwände und mystisches Branding nach Maß.",
+        tier2_f1: "Einbindung des Geburtshoroskops",
+        tier2_f2: "Originalwerk mit Blattgold",
+        tier2_f3: "Vorausgehende Beratungs-Sitzung",
+        tier2_f4: "Maßgeschneiderte Luxus-Verpackung",
+        tier3_title: "Hüter des Kosmos",
+        tier3_desc: "Vollständige Finanzierung von 3D-Altären und Gesamtkunstwerken.",
+        tier3_f1: "Einzigartiges, monumentales Unikat",
+        tier3_f2: "Miteigentum an Ausstellungsrechten",
+        tier3_f3: "Weiheritual für das Kunstwerk",
+        tier3_f4: "Handgebundenes Künstlerbuch",
+        tier_btn: "Mäzen Werden",
+        popular: "Beliebteste Wahl",
+        philo_badge: "Symbolisches Fundament",
+        philo_title: "Symbole, Psyche & Heilige Geometrie",
+        p1_title: "Transpersonale Astrologie",
+        p1_desc: "Planetenkonstellationen direkt in Design-Prozesse übersetzt.",
+        p2_title: "I-Ging & Arkanum",
+        p2_desc: "Dynamische Weisheit des I-Ging vereint mit Tarot-Archetypen.",
+        p3_title: "Heilige Pflanzen",
+        p3_desc: "Darstellung von Bewusstseinszuständen durch botanische Pigmente.",
+        p4_title: "Geometrie des Unbewussten",
+        p4_desc: "Kollektive Träume und Schatten in visuelle Kunst transformiert.",
+        form_title: "Auftrags- oder Mäzenatentums-Anfrage",
+        form_subtitle: "Füllen Sie das Formular aus, um die alchemistische Synergie zu starten.",
+        form_name: "Vollständiger Name",
+        form_email: "E-Mail-Adresse",
+        form_intent: "Projekt-Absicht",
+        intent_opt1: "Astrologisches Branding & Identität",
+        intent_opt2: "Alchemistisches Verpackungsdesign",
+        intent_opt3: "Individuelles Tarot oder I-Ging Kunstwerk",
+        intent_opt4: "Heilpflanzen- & Psyche-Kunst",
+        intent_opt5: "Direktes Mäzenatentum",
+        form_zodiac: "Sternzeichen / Element",
+        form_details: "Details zur Vision",
+        form_btn: "Mystische Anfrage Senden",
+        form_success: "✨ Ihre Nachricht reiste durch den Äther! Wir antworten bei der nächsten günstigen Konstellation.",
+        modal_mat: "Materialien / Technik:",
+        modal_symbol: "Astrologische Symbolik:",
+        modal_status: "Status / Finanzierung:",
+        modal_inquire: "Kauf Anfragen",
+        btn_view_detail: "Mystische Details Ansehen"
+      },
+      ru: {
+        nav_gallery: "Галерея и Каталог",
+        nav_patronage: "Меценатство",
+        nav_philosophy: "Философия",
+        nav_contact: "Заказы",
+        hero_badge: "Алхимический Брендинг и Символическое Искусство",
+        hero_title_1: "Где Психика и Космос",
+        hero_title_2: "Воплощаются в Искусстве и Бренде",
+        hero_description: "Мы создаем астрологический брендинг, алхимическую упаковку и сакральные произведения искусства, финансируемые меценатами.",
+        hero_btn_explore: "Исследовать Каталог",
+        hero_btn_custom: "Заказать Персональную Работу",
+        metric_works: "Алхимических Работ",
+        metric_zodiac: "Астрологических Домов",
+        metric_patrons: "Активных Меценатов",
+        metric_hexagrams: "Гексаграмм И Цзин",
+        gallery_title: "Каталог Визуальной Алхимии",
+        gallery_subtitle: "Роскошные проекты, объединяющие эстетику, эзотерику, священные растения и юнгианскую психолонию.",
+        filter_all: "Все",
+        filter_branding: "Астрологический Брендинг",
+        filter_packaging: "Алхимическая Упаковка",
+        filter_tarot: "Таро и И Цзин",
+        filter_plantas: "Священные Растения и Психика",
+        filter_patronadas: "Работы Меценатов",
+        patron_badge: "Со-Творчество и Финансирование",
+        patron_title: "Уровни Космического Меценатства",
+        patron_subtitle: "Финансируйте произведения искусства. Ваш знак зодиака будет запечатлен в работе.",
+        tier1_title: "Астральный Посвященный",
+        tier1_desc: "Для поддержки постоянного создания печатей и гравюр.",
+        tier1_f1: "Имя в реестре проекта",
+        tier1_f2: "Пронумерованная шелкография",
+        tier1_f3: "Астрологически закодированный сертификат",
+        tier2_title: "Алхимик-Проводник",
+        tier2_desc: "Прямое финансирование холстов и индивидуального брендинга.",
+        tier2_f1: "Интеграция натальной карты в работу",
+        tier2_f2: "Оригинальное полотно с сусальным золотом",
+        tier2_f3: "Предварительная консультация",
+        tier2_f4: "Персональная подарочная коробка",
+        tier3_title: "Хранитель Космоса",
+        tier3_desc: "Полное финансирование 3D-алтарей и мистических инсталляций.",
+        tier3_f1: "Монументальное эксклюзивное произведение",
+        tier3_f2: "Совладение правами на выставки",
+        tier3_f3: "Ритуал освящения работы",
+        tier3_f4: "Книга художника ручного переплета",
+        tier_btn: "Стать Меценатом",
+        popular: "Самый Популярный",
+        philo_badge: "Символическая Основа",
+        philo_title: "Символы, Психика и Сакральная Геометрия",
+        p1_title: "Трансперсональная Астрология",
+        p1_desc: "Перевод планетарных транзитов в визуальный дизайн.",
+        p2_title: "И Цзин и Арканы",
+        p2_desc: "Динамика И Цзин в сочетании с архетипами Таро.",
+        p3_title: "Священные Растения",
+        p3_desc: "Визуализация измененных состояний сознания натуральными пигментами.",
+        p4_title: "Геометрия Бессознательного",
+        p4_desc: "Преобразование снов и архетипов в премиальный дизайн.",
+        form_title: "Заявка на Заказ или Меценатство",
+        form_subtitle: "Заполните форму для начала алхимической синергии.",
+        form_name: "Полное Имя",
+        form_email: "Электронная Почта",
+        form_intent: "Цель Проекта",
+        intent_opt1: "Астрологический Брендинг",
+        intent_opt2: "Дизайн Алхимической Упаковки",
+        intent_opt3: "Картина Таро или И Цзин",
+        intent_opt4: "Искусство Растений и Психики",
+        intent_opt5: "Прямое Меценатство",
+        form_zodiac: "Знак Зодиака / Элемент",
+        form_details: "Детали Видения",
+        form_btn: "Отправить Запрос",
+        form_success: "✨ Ваше послание прошло сквозь эфир! Мы ответим при следующем благоприятном параде планет.",
+        modal_mat: "Материалы / Техника:",
+        modal_symbol: "Астрологический Символизм:",
+        modal_status: "Статус / Финансирование:",
+        modal_inquire: "Запросить Приобретение",
+        btn_view_detail: "Подробнее"
+      },
+      zh: {
+        nav_gallery: "画廊与目录",
+        nav_patronage: "赞助计划",
+        nav_philosophy: "创作哲学",
+        nav_contact: "定制预约",
+        hero_badge: "炼金术品牌重塑与超个人象征艺术",
+        hero_title_1: "当心灵与宇宙",
+        hero_title_2: "显现为艺术与品牌",
+        hero_description: "我们融合占星学、炼金术包装、神圣植物与潜意识宇宙，打造由赞助人出资的高级艺术品与品牌标识。",
+        hero_btn_explore: "探索艺术目录",
+        hero_btn_custom: "预约定制作品",
+        metric_works: "炼金艺术与品牌",
+        metric_zodiac: "映射的黄道宫位",
+        metric_patrons: "活跃赞助人",
+        metric_hexagrams: "易经六十四卦",
+        gallery_title: "视觉炼金术目录与画廊",
+        gallery_subtitle: "探索融合神秘学、易经、神圣植物与荣格深层心理学的高端设计艺术项目。",
+        filter_all: "全部",
+        filter_branding: "占星品牌标识",
+        filter_packaging: "炼金术包装",
+        filter_tarot: "塔罗与易经",
+        filter_plantas: "神圣植物与心灵",
+        filter_patronadas: "赞助人定制作品",
+        patron_badge: "共同创作与私密赞助",
+        patron_title: "宇宙赞助人阶层",
+        patron_subtitle: "资助定制艺术创作。作为赞助人，您的占星星盘与能量印记将永久铭刻于作品中。",
+        tier1_title: "星体启蒙者",
+        tier1_desc: "支持符印与版画的持续创作。",
+        tier1_f1: "项目日志中记录姓名",
+        tier1_f2: "限量版丝网印刷画作",
+        tier1_f3: "占星编码证书",
+        tier2_title: "引导炼金术士",
+        tier2_desc: "直接资助定制画作与神秘品牌重塑。",
+        tier2_f1: "画作中融合个人本命星盘",
+        tier2_f2: "带有24K金箔的原作",
+        tier2_f3: "一对一意图对齐咨询",
+        tier2_f4: "定制奢华包装礼盒",
+        tier3_title: "宇宙守护者",
+        tier3_desc: "全额资助三维祭坛与大型神秘装置艺术。",
+        tier3_f1: "独一无二的纪念碑级作品",
+        tier3_f2: "展览权益共同所有权",
+        tier3_f3: "作品祝圣仪式",
+        tier3_f4: "手工装订艺术家画册",
+        tier_btn: "成为赞助人",
+        popular: "最受欢迎",
+        philo_badge: "象征主义根基",
+        philo_title: "符号、心灵与神圣几何",
+        p1_title: "超个人占星学",
+        p1_desc: "将行星运行轨线直接映射为设计原型语言。",
+        p2_title: "易经与大阿卡纳",
+        p2_desc: "易经的变化智慧与塔罗牌心理原型相结合。",
+        p3_title: "神圣植物",
+        p3_desc: "利用天然植物颜料呈现意识扩张状态。",
+        p4_title: "潜意识几何",
+        p4_desc: "将集体潜意识与梦境转化为尊贵视觉艺术。",
+        form_title: "申请艺术定制或赞助",
+        form_subtitle: "填写您的信息，开启视觉炼金术协同作用。",
+        form_name: "姓名",
+        form_email: "电子邮箱",
+        form_intent: "项目意向",
+        intent_opt1: "占星品牌与视觉标识",
+        intent_opt2: "炼金术包装设计",
+        intent_opt3: "定制塔罗或易经画作",
+        intent_opt4: "神圣植物与心灵艺术",
+        intent_opt5: "直接资金赞助",
+        form_zodiac: "星座 / 关注元素",
+        form_details: "愿景与原型细节",
+        form_btn: "发送神秘预约",
+        form_success: "✨ 您的信息已穿透以太！我们将在下一个有利的天体相位时回复您。",
+        modal_mat: "材质 / 技法：",
+        modal_symbol: "占星象征：",
+        modal_status: "状态 / 赞助：",
+        modal_inquire: "咨询收藏",
+        btn_view_detail: "查看神秘细节"
+      },
+      ja: {
+        nav_gallery: "ギャラリー＆カタログ",
+        nav_patronage: "メセナ・支援",
+        nav_philosophy: "理念",
+        nav_contact: "オーダー依頼",
+        hero_badge: "錬金術的ブランディング＆象徴芸術",
+        hero_title_1: "精神と宇宙が",
+        hero_title_2: "芸術とブランドとして結実する場所",
+        hero_description: "西洋占星術、タロット、易経、神聖植物、深層心理学を融合した高級ブランディングとメセナ支援アートを制作しています。",
+        hero_btn_explore: "カタログを探索",
+        hero_btn_custom: "オーダー作品を依頼",
+        metric_works: "錬金術作品＆ブランド",
+        metric_zodiac: "マッピングされた占星宮",
+        metric_patrons: "アクティブなパトロン",
+        metric_hexagrams: "易経の六十四卦",
+        gallery_title: "視覚的錬金術カタログ",
+        gallery_subtitle: "美の極致と神秘主義、神聖植物、ユング心理学が交差するプレミアム・ポートフォリオ。",
+        filter_all: "すべて",
+        filter_branding: "占星ブランディング",
+        filter_packaging: "錬金術パッケージ",
+        filter_tarot: "タロット＆易経",
+        filter_plantas: "神聖植物と精神",
+        filter_patronadas: "パトロン支援作品",
+        patron_badge: "共同創造とプライベート支援",
+        patron_title: "宇宙のパトロン階層",
+        patron_subtitle: "オーダーメイドアートを支援。パトロンとしてのあなたの出生図が作品に刻まれます。",
+        tier1_title: "アストラル参入者",
+        tier1_desc: "シンボルや版画の継続的な制作を支援。",
+        tier1_f1: "プロジェクト銘記に名前を掲載",
+        tier1_f2: "シリアルナンバー入りシルクスクリーン",
+        tier1_f3: "占星術的に暗号化された証明書",
+        tier2_title: "導きの錬金術士",
+        tier2_desc: "キャンバス作品や神秘的ブランディングを直接支援。",
+        tier2_f1: "作品へのネイタルチャート組み込み",
+        tier2_f2: "純金箔を使用したオリジナル実物作品",
+        tier2_f3: "意図とアライメントの事前にカウンセリング",
+        tier2_f4: "カスタムラグジュアリーボックス",
+        tier3_title: "宇宙の守護者",
+        tier3_desc: "3D祭壇や空間インスタレーションの完全支援。",
+        tier3_f1: "世界に一つだけのモニュメンタルな作品",
+        tier3_f2: "展示権の共同所有",
+        tier3_f3: "作品の儀式と奉納",
+        tier3_f4: "手製本のアーティストブック",
+        tier_btn: "パトロンになる",
+        popular: "一番人気",
+        philo_badge: "象徴的基盤",
+        philo_title: "象徴、精神、神聖幾何学",
+        p1_title: "トランスパーソナル占星術",
+        p1_desc: "天体の運行をデザインの原型言語にマッピング。",
+        p2_title: "易経とアルカナ",
+        p2_desc: "易経の変容の知恵とタロットの心理的象徴の融合。",
+        p3_title: "神聖植物",
+        p3_desc: "オーガニック色素で描く意識拡張状態。",
+        p4_title: "無意識の幾何学",
+        p4_desc: "集合的無意識や夢を高級視覚芸術へと昇華。",
+        form_title: "制作依頼・パトロンお申し込み",
+        form_subtitle: "フォームを記入して、錬金術的シナジーを開始してください。",
+        form_name: "お名前",
+        form_email: "メールアドレス",
+        form_intent: "依頼の目的",
+        intent_opt1: "占星ブランディング＆アイデンティティ",
+        intent_opt2: "錬金術パッケージデザイン",
+        intent_opt3: "カスタム・タロット/易経作品",
+        intent_opt4: "神聖植物＆精神のアート",
+        intent_opt5: "直接的パトロン支援",
+        form_zodiac: "星座 / 関心のあるエレメント",
+        form_details: "ビジョンや象徴の詳細",
+        form_btn: "神秘的な依頼を送信",
+        form_success: "✨ あなたのメッセージはエーテルを渡りました！次の好ましい天体配置の際にご返信いたします。",
+        modal_mat: "素材 / 技法:",
+        modal_symbol: "占星術的象徴:",
+        modal_status: "ステータス / 支援:",
+        modal_inquire: "購入・コレクションのお問合せ",
+        btn_view_detail: "神秘の詳細を見る"
+      },
+      ar: {
+        nav_gallery: "المعرض والكتالوج",
+        nav_patronage: "الرعاية والتمويل",
+        nav_philosophy: "الفلسفة",
+        nav_contact: "الطلبات الخاصة",
+        hero_badge: "هوية خيميائية وفن رمزي تجاوزي",
+        hero_title_1: "حيث تلتقي النفس والكون",
+        hero_title_2: "لتتجلى في الفن والهوية التجارية",
+        hero_description: "نصمم هويات تجارية فلكية، وتغليف خيميائي، وأعمالاً فنية مقدسة بتمويل من الرعاة.",
+        hero_btn_explore: "استكشف الكتالوج",
+        hero_btn_custom: "طلب عمل فني خاص",
+        metric_works: "أعمال وهويات خيميائية",
+        metric_zodiac: "بيوت فلكية تم رسمها",
+        metric_patrons: "رعاة نشطون",
+        metric_hexagrams: "سداسيات إي تشينغ",
+        gallery_title: "كتالوج الخيمياء البصرية",
+        gallery_subtitle: "مشاريع فاخرة تمزج بين الأناقة الفائقة والعلم السري والنباتات المقدسة وعلم النفس العميق.",
+        filter_all: "الكل",
+        filter_branding: "هوية فلكية",
+        filter_packaging: "تغليف خيميائي",
+        filter_tarot: "التاروت وإي تشينغ",
+        filter_plantas: "النباتات المقدسة والنفس",
+        filter_patronadas: "أعمال بتمويل الرعاة",
+        patron_badge: "ابتكار مشترك وتمويل خاص",
+        patron_title: "مستويات الرعاية الكونية",
+        patron_subtitle: "مول أعمالاً فنية مخصصة. ستبقى بصمتك الفلكية مخلدة في العمل.",
+        tier1_title: "المبتدئ الأثيري",
+        tier1_desc: "لدعم الأختام الرمزية والطباعة الفنية المستمرة.",
+        tier1_f1: "إدراج الاسم في سجل المشروع",
+        tier1_f2: "نسخة مطبوعة مرقمة",
+        tier1_f3: "شهادة مشفرة فلكياً",
+        tier2_title: "الخيميائي المرشد",
+        tier2_desc: "يمول مباشرة اللوحات والهويات السرية المخصصة.",
+        tier2_f1: "دمج الخريطة الفلكية في اللوحة",
+        tier2_f2: "عمل فني أصلي مع ورق الذهب",
+        tier2_f3: "جلسة استشارية مسبقة",
+        tier2_f4: "صندوق تغليف فاخر مخصص",
+        tier3_title: "حارس الكون",
+        tier3_desc: "تمويل كامل للمذابح ثلاثية الأبعاد والتجهيزات السحرية.",
+        tier3_f1: "عمل فني صرحي فريد حصري",
+        tier3_f2: "ملكية مشتركة لحقوق العرض",
+        tier3_f3: "طقس تكريس العمل الفني",
+        tier3_f4: "كتاب فنان مجلد يدوياً",
+        tier_btn: "كن راعياً",
+        popular: "الأكثر إقبالاً",
+        philo_badge: "الأساس الرمزي",
+        philo_title: "الرموز، النفس والهندسة المقدسة",
+        p1_title: "الفلك التجاوزي",
+        p1_desc: "رسم حركة الكواكب وتحويلها إلى لغة تصميم.",
+        p2_title: "إي تشينغ والتاروت",
+        p2_desc: "حكمة إي تشينغ المتغيرة مع رموز التاروت النفسية.",
+        p3_title: "النباتات المقدسة",
+        p3_desc: "تجسيد حالات الوعي المتسامية بأصباغ طبيعية.",
+        p4_title: "هندسة الوعي الباطن",
+        p4_desc: "تحويل الأحلام والأحاسيس إلى فن بصري فاخر.",
+        form_title: "طلب عمل خاص أو رعاية",
+        form_subtitle: "أدخل بياناتك للبدء في التناغم الخيميائي لمشروعك.",
+        form_name: "الاسم الكامل",
+        form_email: "البريد الإلكتروني",
+        form_intent: "هدف المشروع",
+        intent_opt1: "هوية تجارية وفلكية",
+        intent_opt2: "تصميم تغليف خيميائي",
+        intent_opt3: "عمل تاروت أو إي تشينغ مخصص",
+        intent_opt4: "فن النباتات المقدسة والنفس",
+        intent_opt5: "رعاية مالية مباشرة",
+        form_zodiac: "البرج الفلكي / العنصر",
+        form_details: "تفاصيل الرؤية والرموز",
+        form_btn: "إرسال الطلب السري",
+        form_success: "✨ تمت سفر رسالتك عبر الأثير! سنرد عليك في الاصطفاف الفلكي المناسب القادم.",
+        modal_mat: "المواد / التقنية:",
+        modal_symbol: "الرمزية الفلكية:",
+        modal_status: "الحالة / التمويل:",
+        modal_inquire: "استفسار عن الاستحواذ",
+        btn_view_detail: "عرض التفاصيل السرية"
+      },
+      hi: {
+        nav_gallery: "गैलरी और कैटलॉग",
+        nav_patronage: "संरक्षण",
+        nav_philosophy: "दर्शन",
+        nav_contact: "कमीशन",
+        hero_badge: "कीमियाई ब्रांडिंग और प्रतीकात्मक कला",
+        hero_title_1: "जहाँ मानस और ब्रह्मांड",
+        hero_title_2: "कला और ब्रांड में प्रकट होते हैं",
+        hero_description: "हम ज्योतिषीय ब्रांडिंग, कीमियाई पैकेजिंग और संरक्षकों द्वारा वित्तपोषित पवित्र कलाकृतियों का निर्माण करते हैं।",
+        hero_btn_explore: "कैटलॉग देखें",
+        hero_btn_custom: "कस्टम कलाकृति का अनुरोध करें",
+        metric_works: "कीमियाई कार्य और ब्रांड",
+        metric_zodiac: "मैप किए गए ज्योतिषीय गृह",
+        metric_patrons: "सक्रिय संरक्षक",
+        metric_hexagrams: "आई चिंग हेक्साग्राम",
+        gallery_title: "दृश्य कीमिया कैटलॉग",
+        gallery_subtitle: "उत्कृष्ट कला, पवित्र पौधों और गहरे मानसशास्त्र का संगम।",
+        filter_all: "सभी",
+        filter_branding: "ज्योतिषीय ब्रांडिंग",
+        filter_packaging: "कीमियाई पैकेजिंग",
+        filter_tarot: "टैरो और आई चिंग",
+        filter_plantas: "पवित्र पौधे और मानस",
+        filter_patronadas: "संरक्षित कार्य",
+        patron_badge: "सह-निर्माण और निजी वित्तपोषण",
+        patron_title: "ब्रह्मांडीय संरक्षण स्तर",
+        patron_subtitle: "कस्टम कला का वित्तपोषण करें। आपका ज्योतिषीय हस्ताक्षर कार्य में अमर रहेगा।",
+        tier1_title: "एस्ट्रा-प्रारंभिक",
+        tier1_desc: "प्रतीकात्मक मुद्रण के निरंतर समर्थन के लिए।",
+        tier1_f1: "परियोजना लॉगबुक में नाम",
+        tier1_f2: "संख्यांकित स्क्रीनप्रिंट संस्करण",
+        tier1_f3: "ज्योतिषीय रूप से एनकोड प्रमाण पत्र",
+        tier2_title: "मार्गदर्शक कीमियागर",
+        tier2_desc: "कैनवास और अनुकूलित ब्रांडिंग का सीधा वित्तपोषण।",
+        tier2_f1: "जन्म कुंडली का कला में समावेश",
+        tier2_f2: "स्वर्ण पत्र के साथ मूल कृति",
+        tier2_f3: "परामर्श सत्र",
+        tier2_f4: "कस्टम लक्जरी बॉक्स",
+        tier3_title: "ब्रह्मांड के रक्षक",
+        tier3_desc: "त्रिमितीय वेदियों और प्रतिष्ठानों का पूर्ण वित्तपोषण।",
+        tier3_f1: "अद्वितीय और विशेष स्मारक कृति",
+        tier3_f2: "प्रदर्शनी अधिकारों का सह-स्वामित्व",
+        tier3_f3: "कलाकृति का अभिषेक अनुष्ठान",
+        tier3_f4: "हस्तनिर्मित कलाकार पुस्तक",
+        tier_btn: "संरक्षक बनें",
+        popular: "सबसे लोकप्रिय",
+        philo_badge: "प्रतीकात्मक आधार",
+        philo_title: "प्रतीक, मानस और पवित्र ज्यामिति",
+        p1_title: "पार-व्यक्तिगत ज्योतिष",
+        p1_desc: "ग्रहों के पारगमन को डिज़ाइन भाषा में बदलना।",
+        p2_title: "आई चिंग और अर्केनम",
+        p2_desc: "आई चिंग का ज्ञान और टैरो का मानसशास्त्र।",
+        p3_title: "पवित्र पौधे",
+        p3_desc: "प्राकृतिक रंगों द्वारा चेतना के विस्तार का चित्रण।",
+        p4_title: "अचेतन की ज्यामिति",
+        p4_desc: "सपनों और छाया-प्रतीकों का लक्जरी कला में परिवर्तन।",
+        form_title: "कमीशन या संरक्षण आवेदन",
+        form_subtitle: "अपने प्रोजेक्ट की कीमियाई जुगलबंदी शुरू करने के लिए विवरण भरें।",
+        form_name: "पूरा नाम",
+        form_email: "ईमेल पता",
+        form_intent: "प्रोजेक्ट का उद्देश्य",
+        intent_opt1: "ज्योतिषीय ब्रांडिंग और पहचान",
+        intent_opt2: "कीमियाई पैकेजिंग डिज़ाइन",
+        intent_opt3: "कस्टम टैरो या आई चिंग पेंटिंग",
+        intent_opt4: "पवित्र पौधे और मानस कला",
+        intent_opt5: "प्रत्यक्ष वित्तीय संरक्षण",
+        form_zodiac: "राशि / ध्यान का तत्व",
+        form_details: "दृष्टिकोण का विवरण",
+        form_btn: "रहस्यमयी आवेदन भेजें",
+        form_success: "✨ आपका संदेश ईथर के माध्यम से भेजा गया है! हम अगले अनुकूल ग्रह संरेखण पर उत्तर देंगे।",
+        modal_mat: "सामग्री / तकनीक:",
+        modal_symbol: "ज्योतिषीय प्रतीकवाद:",
+        modal_status: "स्थिति / वित्तपोषण:",
+        modal_inquire: "अधिग्रहण पूछताछ",
+        btn_view_detail: "रहस्यमयी विवरण देखें"
+      }
+    };
+
+    let currentLang = 'es';
+
+    // RENDER GALLERY ITEMS
+    function renderGallery(items) {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '';
+
+      items.forEach(item => {
+        const titleText = item.title[currentLang] || item.title['es'];
+        const descText = item.desc[currentLang] || item.desc['es'];
+        const btnText = translations[currentLang]?.btn_view_detail || translations['es'].btn_view_detail;
+
+        const card = document.createElement('div');
+        card.className = "mystic-card rounded-2xl overflow-hidden group flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="relative overflow-hidden h-52">
+              <img src="${item.img}" alt="${titleText}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-cosmicNavy via-transparent to-transparent opacity-80"></div>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-cosmicNavy/90 border border-goldGlow/40 text-starlight">
+                ${item.category}
+              </span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-bold font-magical text-white mb-2 group-hover:text-starlight transition-colors">${titleText}</h3>
+              <p class="text-xs text-slate-300 line-clamp-2 leading-relaxed mb-4">${descText}</p>
+            </div>
+          </div>
+          <div class="px-5 pb-5 pt-0 flex items-center justify-between border-t border-goldGlow/10 pt-3">
+            <span class="text-sm font-extrabold text-gold-gradient">${item.price}</span>
+            <button onclick="openModal(${item.id})" class="text-xs text-cyan-300 hover:text-starlight font-semibold flex items-center space-x-1">
+              <span>${btnText}</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    // FILTER GALLERY
+    function filterGallery(category) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.classList.add('bg-starlight', 'text-black', 'active');
+          btn.classList.remove('bg-cosmicNavy/80', 'text-slate-300');
+        } else {
+          btn.classList.remove('bg-starlight', 'text-black', 'active');
+          btn.classList.add('bg-cosmicNavy/80', 'text-slate-300');
+        }
+      });
+
+      if (category === 'all') {
+        renderGallery(galleryData);
+      } else {
+        const filtered = galleryData.filter(i => i.category === category);
+        renderGallery(filtered);
+      }
+    }
+
+    // CHANGE LANGUAGE FUNCTION
+    function changeLanguage(langKey) {
+      currentLang = langKey;
+      const dict = translations[langKey] || translations['es'];
+
+      // Update all elements with data-i18n attribute
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      // Update document direction for Arabic
+      if (langKey === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+      }
+
+      // Re-render gallery with translated items
+      const activeFilter = document.querySelector('.filter-btn.active')?.getAttribute('data-filter') || 'all';
+      filterGallery(activeFilter);
+    }
+
+    // MODAL LOGIC
+    function openModal(id) {
+      const item = galleryData.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('modal-img').src = item.img;
+      document.getElementById('modal-title').textContent = item.title[currentLang] || item.title['es'];
+      document.getElementById('modal-category').textContent = item.category.toUpperCase();
+      document.getElementById('modal-desc').textContent = item.desc[currentLang] || item.desc['es'];
+      document.getElementById('modal-materials').textContent = item.materials;
+      document.getElementById('modal-symbolism').textContent = item.symbolism;
+      document.getElementById('modal-status').textContent = item.status;
+      document.getElementById('modal-price').textContent = item.price;
+
+      document.getElementById('item-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('item-modal').classList.add('hidden');
+    }
+
+    function selectTier(tierName) {
+      const select = document.getElementById('form-intent-select');
+      select.value = 'mecenazgo';
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      document.getElementById('form-message').classList.remove('hidden');
+      e.target.reset();
+    }
+
+    // STARFIELD CANVAS BACKGROUND ENGINE
+    const canvas = document.getElementById('cosmic-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initStars();
+    }
+
+    function initStars() {
+      stars = [];
+      const count = Math.floor((canvas.width * canvas.height) / 3000);
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5,
+          alpha: Math.random(),
+          speed: Math.random() * 0.015 + 0.005,
+          color: Math.random() > 0.8 ? '#4deeea' : (Math.random() > 0.6 ? '#ffd700' : '#ffffff')
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        if (star.alpha > 1 || star.alpha < 0) {
+          star.speed = -star.speed;
+        }
+
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = star.color;
+        ctx.globalAlpha = Math.abs(star.alpha);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // INITIALIZATION ON LOAD
+    window.onload = function() {
+      resizeCanvas();
+      animateStars();
+      renderGallery(galleryData);
+    };
+  </script>
+</body>
+</html>
